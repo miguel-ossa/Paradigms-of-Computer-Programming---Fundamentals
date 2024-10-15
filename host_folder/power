@@ -1,0 +1,37 @@
+declare
+fun {Pow1 X N}
+   if N==0 then 1
+   else X*{Pow1 X N-1} end
+end
+
+% X**0 = 1
+% X**n = X*X**(n-1) when n>0 and n is odd
+% X**n = y**2       when n>0 and n is even and y=x**(n/2)
+fun {Pow2 X N}
+   if N==0 then 1
+   elseif N mod 2 == 1 then
+	  X*{Pow2 X (N-1)}
+   else Y in
+	  Y={Pow2 X (N div 2)}
+	  Y*Y
+   end
+end
+
+% Tail recursive version
+fun {Pow3 X N}
+   fun {PowLoop Y I A}
+	  if I==0 then A
+	  elseif I mod 2 == 0 then
+		 {PowLoop Y*Y (I div 2) A}
+	  else {PowLoop Y (I-1) Y*A} end
+   end
+in
+   {PowLoop X N 1}
+end
+
+
+{Browse {Pow1 10 16}}
+{Browse {Pow2 10 16}}
+{Browse {Pow3 10 16}}
+
+

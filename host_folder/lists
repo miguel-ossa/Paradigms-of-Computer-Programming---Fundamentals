@@ -1,0 +1,148 @@
+   
+% Working with lists in Oz
+declare X1 X2 in
+X1=6|X2
+{Browse X1.2.1}
+{Browse X1.1} % 6
+{Browse X1.2} % _
+{Browse X1.2==nil}
+
+declare X3 in
+X2=7|X3
+
+X3=nil
+
+{Browse [6 7]==6|7|nil}
+
+declare
+L=[1 2]
+{Browse L.1} % car
+{Browse L.2} % cdr
+
+% Sum of elements
+declare
+fun {Sum L}
+   if L==nil then 0
+   else L.1+{Sum L.2} end
+end
+{Browse {Sum [1 2 3]}}
+
+% Tail-recursive Sum
+declare
+fun {Sum2 L A}
+   if L==nil then A
+   else {Sum2 L.2 L.1+A} end
+end
+{Browse {Sum2 [1 2 3] 0}}
+
+% Nth element of a list
+declare
+fun {Nth L N}
+   if N==1 then L.1
+   else {Nth L.2 N-1} end
+end
+{Browse {Nth [1 2 3] 2}}
+
+declare
+L1=[2]
+{Browse L1.1}
+{Browse L1.2}
+
+% pattern matching
+declare
+fun {Sum L}
+   case L
+   of H|T then H+{Sum T}
+   [] nil then 0
+   end
+end
+{Browse {Sum [1 2 3 4 5]}}
+
+% pattern matching tail recursive
+declare
+fun {Sum2 L A}
+   case L
+   of H|T then {Sum2 T H+A}
+   [] nil then A
+   end
+end
+{Browse {Sum2 [1 2 3 4 5] 0}}
+
+% pattern engineering tail recursive
+declare
+fun {Sum3 L A}
+   case L
+   of H1|H2|T then {Sum3 T H1+H2+A}
+   [] H|T then {Sum3 T H+A}
+   [] nil then A
+   end
+end
+{Browse {Sum3 [1 2 3 4 5] 0}}
+
+declare
+fun {MakeList N}
+   if N==0 then nil
+   else
+	  N|{MakeList N-1}
+   end
+end
+
+{Browse {MakeList 3}}
+{Browse [3 2 1]=={MakeList 3}}
+
+declare
+% List of factorials in ascending order
+fun {Fact N}
+   fun {Aux N Nmax FactNminus1}
+      if N>Nmax then nil
+      else
+		 (FactNminus1*N)|{Aux N+1 Nmax FactNminus1*N}
+      end
+   end
+in
+   {Aux 1 N 1}
+end
+{Browse {Fact 10}}
+
+%N   Nmax FactNminus1 Fact
+%1   4    1           1|
+%2   4    1           1|2|
+%3   4    2           1|2|6
+%4   4    6           1|2|6|24
+%5   4    24          1|2|6|24|nil
+
+declare
+% Checks if a list L1 is the prefix of a list L2
+fun {Prefix L1 L2}
+   case L1 of H1|T1 then
+	  case L2 of H2|T2 then
+		 if H1==H2 then
+		   {Prefix T1 T2}
+		 else
+			false
+		 end
+	  [] nil then false
+	  end
+   [] nil then true
+   end
+end
+
+%Checks if a list is inside another list
+fun {FindString L1 L2}
+   if {Prefix L1 L2} == true then
+	  true
+   else
+	  case L1 of H1|T1 then
+		 case L2 of H2|T2 then
+			{FindString L1 T2}
+		 [] nil then false
+		 end
+	  [] nil then false
+	  end
+   end
+end
+
+{Browse {FindString [a b c] [a b c d]}}
+
+
+

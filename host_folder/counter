@@ -1,0 +1,19 @@
+declare
+class Counter
+   attr a1
+   meth init a1:=0 end
+   meth inc a1:=@a1+1 end
+   meth get(X) X=@a1 end
+end
+
+C1={New Counter init}
+C2={New Counter init}
+{C1 inc} {C1 inc}
+{C2 inc}
+{Browse '===============Counter============'}
+local X in
+   {C1 get(X)} {Browse X}
+end
+local X in
+   {C2 get(X)} {Browse X}
+end

@@ -1,0 +1,12 @@
+declare N in
+   fun {Shuffle L}
+	  N=0
+	  for X in L do N = N + 1 end
+	  @L
+   end
+   {Browse {Shuffle [3 4 5 1]}}
+end
+
+
+
+

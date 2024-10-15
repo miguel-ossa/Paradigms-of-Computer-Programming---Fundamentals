@@ -1,0 +1,10 @@
+declare
+X=[[1] [2]]
+Z=(1|nil)|(2|nil)|nil
+
+{Browse X==1|2|nil} % false
+{Browse X==(1|nil)|(2|nil)|nil} % true
+{Browse X==[(1|nil)(2|nil)]} % true
+{Browse X==[(1|nil)|(2|nil)]} % false
+{Browse X==[[1]|[2]]} % false
+{Browse X==[(1|nil)[2]]} % true

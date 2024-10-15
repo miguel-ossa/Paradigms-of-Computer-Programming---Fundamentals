@@ -1,0 +1,31 @@
+declare
+% 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, ...
+fun {FibNaive N}
+   if N==0 then 0
+   elseif N==1 then 1
+   else
+	  {FibNaive N-1}+{FibNaive N-2}
+   end
+   
+end
+
+fun {Fib N}
+   local FibAux in
+	  fun {FibAux N Acc1 Acc2}
+		 if N==0 then 0
+		 elseif N==1 orelse N==2 then Acc1+Acc2
+		 else
+			{FibAux (N-1) Acc2 (Acc1+Acc2)}
+		 end
+	  end
+	  {FibAux N 0 1}
+   end
+end
+
+{Browse {FibNaive 0}} % = 0
+{Browse {FibNaive 1}} % = 1
+{Browse {FibNaive 2}} % = 1
+{Browse {FibNaive 3}} % = 2
+{Browse {FibNaive 4}} % = 3
+{Browse {FibNaive 1000}}
+{Browse {Fib 1000}}

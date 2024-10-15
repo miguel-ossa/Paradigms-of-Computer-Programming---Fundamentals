@@ -1,0 +1,118 @@
+% Records
+
+% Transform a list into a record
+declare
+fun {Transform L}
+   local MakeLabels Aux Y A R RX L2 in
+	  fun {MakeLabels X}
+		 case X of H|T then
+			H|{MakeLabels T}
+		 [] nil then nil
+		 end
+	  end
+      proc {Aux AR VA}
+		 local RA in
+			case AR of H1|T1 then
+			   case VA of H2|T2 then
+				  {AdjoinAt L2() H1 H2 RA}
+				  {Adjoin R RA RX} % Como primera llamada, bien...
+				  {Aux T1 T2}
+			   end
+			[] nil then skip
+			end
+		 end
+	  end
+
+    Y=L.1
+	  A={MakeLabels L.2.1}
+	  {Record.make Y A R}
+	  {Record.label R L2}
+	  {Aux L.2.1 L.2.2.1}
+    RX
+  end
+end
+%declare
+L=[cats [size color] [big brown]]
+%{Browse L.2.1} % [size color]
+%{Browse L.2.2.1} % [big brown]
+%{Browse L.2.2.1.1} % big
+R={Transform L}
+%R.1=black
+{Browse R}
+
+declare
+R=cats(size:big color:black)
+{Browse {Arity R}.1}
+
+declare L A R R2 R3 R4 L2 in
+L=cats
+A=[size color]
+
+{Record.make L A R}
+{Browse R}
+{Record.label R L2}
+{AdjoinAt L2() size big R2}
+%{Record.clone R2 R3}
+{AdjoinAt L2() color black R3}
+{Adjoin R2 R3 R4}
+{Browse R4}
+{Browse {Arity R}.1}
+
+
+
+% Records
+
+% Transform a list into a record
+declare
+fun {Transform X}
+   local MakeLabels Aux L A R RX L2 in
+	  fun {MakeLabels X}
+		 case X of H|T then
+			H|{MakeLabels T}
+		 [] nil then nil
+		 end
+	  end
+      proc {Aux AR VA}
+		 case AR of H1|T1 then
+			case VA of H2|T2 then
+			   {AdjoinAt L2() H1 H2 R}
+			   {Aux T1 T2}
+			end
+		 end
+	  end
+	  
+      L=X.1
+	  A={MakeLabels X.2.1}
+	  {Record.make L A R}
+	  {Record.label R L2}
+	  {Aux X.2.1 X.2.2.1}
+      R
+  end
+end
+%declare
+L=[cats [size color] [big brown]]
+%{Browse L.2.1} % [size color]
+%{Browse L.2.2.1} % [big brown]
+%{Browse L.2.2.1.1} % big
+R={Transform L}
+%R.1=black
+{Browse R}
+
+declare
+R=cats(size:big color:black)
+{Browse {Arity R}.1}
+
+declare L A R R2 L2 in
+L=cats
+A=[size color]
+
+{Record.make L A R}
+{Browse R}
+{Record.label R L2}
+{AdjoinAt L2() size big R2}
+{AdjoinAt L2() color black R2}
+{Browse R2}
+{Browse {Arity R}.1}
+
+
+

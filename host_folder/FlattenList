@@ -1,0 +1,48 @@
+declare
+fun {Append L1 L2}
+   case L1
+   of nil then L2
+   [] H|T then H|{Append T L2}
+   end
+end
+fun {FlattenList L}
+   fun {Aux L A}
+	  case L
+	  of nil then A
+	  [] nil|T then {Aux T A}
+	  [] (H1|H2)|T then {Aux H1|H2|T A}
+	  [] H|T then {Aux T {Append A H|nil}}
+	  end
+   end
+in
+   {Aux L nil}
+end
+
+%{Browse {Append 1|nil [2]}}
+{Browse {FlattenList [[1 2] nil [3] [4 5] 6 7|nil nil [8 9]]}}
+
+% Analysis
+declare L H1 Y1 T in
+L=[[1 2] nil [3] [4 5] 6 7|nil nil [8 9]]
+case L of (H1|T1)|T then
+   {Browse H1} % 1
+   {Browse T1} % [2]
+   {Browse T}  % [nil [3] [4 5] 6 [7] nil [8 9]]
+end
+% (H1|T1)|T = [1 [2] [nil [3] [4 5] 6 [7] nil [8 9]]]
+declare L X T in
+L=[1 [2] nil [3] [4 5] 6 [7] nil [8 9]]
+case L of X|T then
+   {Browse X} % 1
+   {Browse T}  % [[2] nil [3] [4 5] 6 [7] nil [8 9]]
+end
+% X = 1
+declare L H1 Y1 T in
+L=[[2] nil [3] [4 5] 6 [7] nil [8 9]]
+case L of (H1|T1)|T then
+   {Browse H1} % 2
+   {Browse T1} % nil
+   {Browse T}  % [nil [3] [4 5] 6 [7] nil [8 9]]
+end
+% (H1|T1)|T = [2 nil [3] [4 5] 6 [7] nil [8 9]]
+

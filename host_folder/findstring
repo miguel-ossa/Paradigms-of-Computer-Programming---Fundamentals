@@ -1,0 +1,33 @@
+declare
+% Checks if a list L1 is the prefix of a list L2
+fun {Prefix L1 L2}
+   case L1 of H1|T1 then
+	  case L2 of H2|T2 then
+		 if H1==H2 then
+		   {Prefix T1 T2}
+		 else false end
+	  [] nil then false
+	  end
+   [] nil then true
+   end
+end
+
+%Checks if a list is inside another list
+fun {FindString L1 L2}
+   if {Prefix L1 L2} == true then
+	  true
+   else
+	  case L1 of H1|T1 then
+		 case L2 of H2|T2 then
+			{FindString L1 T2}
+		 [] nil then false
+		 end
+	  [] nil then false
+	  end
+   end
+end
+
+{Browse {Prefix nil [1]}} % true
+{Browse {Prefix [1] nil}} % false
+{Browse {FindString [a b c] [a b c d]}} % true
+{Browse {FindString [b c] [a b c d] }} % true

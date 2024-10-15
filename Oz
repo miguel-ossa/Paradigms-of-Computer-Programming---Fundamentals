@@ -1,0 +1,151 @@
+local X=1 in
+  local X=2 in
+    local X=3 in
+      {Browse X} % (3)
+    end
+  end
+  {Browse X} % (1)
+end
+
+local P Q X=1 Y=2 Z=3 in
+    fun {P X}
+        X*Y+Z
+    end
+    fun {Q Z}
+        X*Y+Z
+    end
+    {Browse {P 4} == 11}
+    {Browse {Q 4} == 6}
+end
+
+declare
+fun {Sqr X}
+   X*X
+end
+{Browse {Sqr 115.9}}
+
+declare
+fun {SumDigits N}
+   (N mod 10) + (N div 10) mod 10 +
+   (N div 10) mod 10
+end
+
+{Browse {SumDigits 123}}
+
+declare
+fun {SumDigitsR N}
+   if N==0 then 0
+   else
+      (N mod 10) +
+      {SumDigitsR (N div 10)}
+     end
+end
+{Browse {SumDigitsR 19309034}}
+
+declare
+fun {Interest N C R}
+   if N==0 then C
+   else
+      {Interest N-1 C*(1+(R div 100)) R}
+   end
+end
+{Browse {Interest 60 409 9}}
+
+declare
+fun {InterestP N C}
+   N*C
+end
+{Browse {InterestP 60 408}}
+
+
+declare
+fun {MainSum N}
+    local Sum in
+       fun {Sum N Acc}
+	  if N==0 then Acc
+	  else {Sum N-1 Acc+N*N}
+	  end
+        end
+        {Sum N 0}
+    end
+end
+{Browse {MainSum 6}}    
+
+declare
+fun {SumDigits S}
+   local SumDigits2 in
+      fun {SumDigits2 S A}
+	 if S==0 then A
+	 else
+	    {SumDigits2 (S div 10) A+(S mod 10)}
+	 end
+      end
+      {SumDigits2 S 0}
+   end
+end
+{Browse {SumDigits 314159265}}
+
+declare
+fun {MainMirror Int}
+    local Mirror in
+       fun {Mirror Int Acc}
+	  if Int==0 then Acc
+	  else
+	     {Mirror (Int div 10) (Int mod 10)+Acc*10}
+	  end
+        end
+        {Mirror Int 0}
+    end
+end
+{Browse {MainMirror 4321}}
+
+declare
+% Prime function with tail recursion
+fun {Prime N}
+   local PrimeInt in
+      fun {PrimeInt N A}
+	 if A==0 then false
+	 else
+	    if A==1 then true
+	    else
+	       if (N mod A) == 0 then
+		  false
+	       else
+		  {PrimeInt N A-1}
+	       end	       
+	    end
+	 end
+      end
+      {PrimeInt N N-1}
+   end
+end
+{Browse {Prime 1}}
+
+declare 
+fun {Pow1 X N}
+   if N==0 then 1
+   else X*{Pow1 X N-1} end
+end
+fun {Pow2 X N}
+   if N==0 then 1
+   elseif N mod 2 == 1 then
+      X*{Pow2 X N-1}
+   else Y in
+      Y={Pow2 X N div 2}
+      Y*Y
+   end
+end
+fun {Pow3 X N}
+   fun {PowLoop Y I A}
+      if I==0 then A
+      elseif I mod 2 == 0 then
+	 {PowLoop Y*Y (I div 2) A}
+      else {PowLoop Y (I-1) Y*A} end
+   end
+in
+   {PowLoop X N 1}
+end
+
+{Browse {Pow1 2 640000}}
+{Browse {Pow2 2 640000}}
+{Browse {Pow3 2 640000}}

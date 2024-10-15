@@ -1,0 +1,7 @@
+
+A=5
+B=6
+C={NewCell A} % create a cell
+{Browse @C} % Display content
+C:=B
+{Browse @C} % Display content

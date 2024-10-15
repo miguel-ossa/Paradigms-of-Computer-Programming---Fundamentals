@@ -1,0 +1,11 @@
+declare
+fun {Reverse L}
+   Rs={NewCell nil}
+in
+   for X in L do Rs := X|@Rs end
+   @Rs
+end
+
+{Browse {Reverse [3 4 5 1]}}
+
+

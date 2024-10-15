@@ -1,0 +1,14 @@
+declare
+local
+   C={NewCell 0}
+in
+   fun {Reverse L}
+		{Browse H|T}
+		 L
+	  end
+   end
+end
+
+
+{Browse {Reverse [1 2 3 4 5]}}
+

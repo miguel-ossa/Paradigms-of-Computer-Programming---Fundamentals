@@ -1,0 +1,45 @@
+declare Pascal AddList ShiftLeft RightLeft
+
+fun {Pascal N}
+   if N==1 then [1]
+   else
+	  {AddList {ShiftLeft {Pascal N-1}}
+	   {ShiftRight {Pascal N-1}}}
+   end
+end
+
+fun {ShiftLeft L}
+   case L of H|T then
+	  H|{ShiftLeft T}
+   else [0] end
+end
+
+fun {ShiftRight L} 0|L end
+
+fun {AddList L1 L2}
+   case L1 of H1|T1 then
+	  case L2 of H2|T2 then
+		 H1+H2|{AddList T1 T2}
+	  end
+   else nil end
+end
+
+%{Browse {ShiftLeft [1 2 3]}} % gives [1 2 3 0] % H=1,2,3... 0
+%{Browse {ShiftRight [1 2 3]}} % gives [0 1 2 3]
+%{Browse {ShiftLeft [1]}} % gives [1 0]
+%{Browse {ShiftRight [1]}} % gives [0 1]
+%{Browse {AddList [1 0] [0 1]}} % gives [1 1]
+%{Browse {ShiftLeft [0]}} % never happens because it ends with N=1, giving [1]
+
+{Browse {Pascal 1}}
+{Browse {Pascal 2}}
+{Browse {Pascal 3}}
+{Browse {Pascal 4}}
+{Browse {Pascal 5}}
+{Browse {Pascal 6}}
+
+% Build a list with car & cdr
+declare
+H=6
+T=[1 2]
+{Browse H|T}

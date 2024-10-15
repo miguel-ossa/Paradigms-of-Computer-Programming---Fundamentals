@@ -1,0 +1,24 @@
+declare Prime
+fun {Prime N}
+   local Prime2 in
+	  fun {Prime2 N A}
+		 if A == 0 then
+            false
+		 else
+			if A == 1 then
+                true
+			else
+			   if (N mod A) == 0 then
+				  false
+			   else
+				  {Prime2 N A-1}
+			   end
+			end
+		 end
+	  end
+	  {Prime2 N N-1}
+   end
+end
+
+
+{Browse {Prime 1}}

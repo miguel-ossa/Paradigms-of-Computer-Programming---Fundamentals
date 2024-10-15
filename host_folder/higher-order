@@ -1,0 +1,136 @@
+% Higher-order programming
+
+% Static scope
+local P Q in
+   proc {P} {Browse 100} end
+   proc {Q} {P} end
+   local P in
+	  proc {P} {Browse 200} end
+	  {Q}
+   end
+end
+
+declare A Inc in
+A=1
+proc {Inc X Y} Y=X+A end
+Inc=proc{$ X Y} Y=X+A end
+
+local A Inc in
+   A=1
+   proc {Inc X Y}
+	  Y=X+A
+   end
+end
+
+% Genericity
+declare
+fun {Map F L} % F is the function X*X, L is the list
+   case L of nil then nil
+   [] H|T then {F H}|{Map F T} % {F H} does H*H
+   end
+end
+
+{Browse {Map fun {$ X} X*X end [7 8 9]}}
+
+% Instantiation
+declare
+fun {MakeAdd A}
+   fun {$ X} X+A end
+end
+Add5={MakeAdd 5}
+{Browse {Add5 100}}
+
+% Function composition
+declare
+fun {Compose F G}
+   fun {$ X}{F {G X}} end
+end
+Fnew={Compose fun {$ X} X*X end
+         	  fun {$X} X+1 end}
+{Browse {Fnew 2}}
+{Browse {{Compose Fnew Fnew} 2}} % (2+1)*(2+1)=9 -> (9+1)*(9+1)=100
+
+% Acumulator
+declare
+fun {FoldL L F U}
+   case L
+   of nil then U
+   [] H|T then {FoldL T F {F U H}}
+   end
+end
+S={FoldL [5 6 7] fun {$ X Y} X+Y end 0}
+{Browse S}
+
+% Encapsulation
+declare
+fun {Zero} 0 end
+fun {Inc H}
+   N={H}+1 in
+   fun {$} N end
+end
+Three={Inc {Inc {Inc Zero}}}
+{Browse {Three}}
+
+% Delayed execution
+declare
+proc {IfTrue Cond Stmt}
+   if {Cond} then {Stmt} end
+end
+Stmt=proc ($) {Browse 111*111} end
+{IfTrue fun {$} 1<2 end Stmt}
+
+{Browse Browse}
+
+declare
+fun {M Int}
+  fun {$} Int#{M Int-1} end
+end
+{Browse M}
+{Browse {M 5}}
+Test = {M 5}
+{Browse {Test}}
+
+declare
+fun {FunnyFunc FunL L}
+   case L of H|T then {FunL.1 H}|{FunnyFunc FunL.2 T}
+   else nil
+   end
+end
+proc {Test FunL L SoIL}
+   {Browse {FunnyFunc FunL L} == SoIL}
+end
+
+FunL=[fun {$ N} N+1 end fun {$ N} N-1 end]
+L=[1 2]
+SoL=[2 1]
+{Test FunL L SoL}
+
+
+declare
+fun {Build D C}
+   fun {$ X}
+	  fun {Aux X D C}
+		 case D of H1|T1 then
+			case C of H2|T2 then
+			   if H1==X then
+				  H2
+			   else
+				  {Aux X T1 T2}
+			   end
+			end
+		 [] nil then bottom
+		 end
+	  end
+   in
+	  {Aux X D C}
+   end
+end
+
+D = [1 2 3]
+C = [~1 ~2 ~3]
+F = {Build D C}
+
+{Browse {F 1}} % Prints ~1
+{Browse {F 2}} % Prints ~2
+{Browse {F 3}} % Prints ~3
+{Browse {F 4}} % Prints bottom

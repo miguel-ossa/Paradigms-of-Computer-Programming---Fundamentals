@@ -1,0 +1,15 @@
+declare
+fun {New Class Init}
+   Fs={Map Class.attrs fun {$ X} X#{NewCell _} end}
+   S={List.toRecord state Fs}
+   proc {Obj M}
+	  {Class.methods.{Label M} M S}
+   end
+in
+   {Obj Init}
+   Obj
+end
+
+
+
+

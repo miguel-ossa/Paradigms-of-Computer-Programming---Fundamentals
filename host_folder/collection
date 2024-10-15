@@ -1,0 +1,47 @@
+declare
+class Collection
+   attr c
+   meth init c:=nil end
+   meth put(X) c:=X|@c end
+   meth get($)
+	  local X in
+		 X=@c.1
+		 c:=@c.2
+		 X
+	  end	  
+   end
+   meth isEmpty($) @c==nil end
+   meth union(C)
+	  local X Y in
+		 {C isEmpty(X)}
+		 if X==true then
+			skip
+		 else
+			{C get(Y)}
+			{self put(Y)}
+			{self union(C)}
+		 end
+	  end
+   end
+end
+
+C1={New Collection init}
+C2={New Collection init}
+{C1 put('Libro 1 col 1')}
+{C1 put('Libro 2 col 1')}
+{C2 put('Libro 1 col 2')}
+{C2 put('Libro 2 col 2')}
+{Browse '===============Collection============'}
+local X Y Z W in
+   %V={NewCell nil}
+   %{C1 get(X)} {Browse X}
+   %{C1 isEmpty(W)} {Browse W}
+   %{C1 get(Y)} {Browse Y}
+   %{C1 isEmpty(Z)} {Browse Z}
+   {C1 union(C2)}
+   {C1 get(X)} {Browse X}
+   {C1 get(Y)} {Browse Y}
+   {C1 get(Z)} {Browse Z}
+   {C1 get(W)} {Browse W}
+end
+

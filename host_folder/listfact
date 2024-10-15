@@ -1,0 +1,22 @@
+declare
+fun {ListFact N}
+   fun {FactN I}
+	  fun {Fact2 I A}
+		 if I==0 then A
+		 else {Fact2 I-1 I*A} end
+	  end
+   in
+	  {Fact2 I 1}
+   end
+   fun {Aux I N}
+	  if I==N then nil
+	  elseif I==1 then
+		 I | {FactN I+1} | {Aux I+1 N}
+	  else {FactN I+1} | {Aux I+1 N}
+	  end
+   end
+in
+   {Aux 1 N}
+end
+
+{Browse {ListFact 10}}

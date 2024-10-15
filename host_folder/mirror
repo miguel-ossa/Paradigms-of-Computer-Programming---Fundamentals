@@ -1,0 +1,19 @@
+declare
+fun {MainMirror Int}
+   fun {Mirror Int Acc}
+	  if Int==0 then Acc
+	  else
+		 {Mirror (Int div 10) Acc*10+(Int mod 10)}
+	  end
+   end
+in	   
+   {Mirror Int 0}
+end
+
+
+{Browse {MainMirror 123456789}}
+
+%declare
+%X=1234
+%{Browse X div 10} --> 123 --> 12
+%{Browse X mod 10} --> 4   --> 3

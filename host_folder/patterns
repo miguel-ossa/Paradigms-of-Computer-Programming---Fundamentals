@@ -1,0 +1,10 @@
+declare
+proc {TestPattern L}
+   case L
+   of M then {Browse 1} % always is executed this one
+   [] H|T then {Browse 2}
+   [] nil then {Browse 3}
+   end
+end
+
+{TestPattern [a]}
